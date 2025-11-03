@@ -1,31 +1,42 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import tropicalImage from "@/assets/category-tropical.jpg";
 import { ArrowLeft } from "lucide-react";
+import { getProductById } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
-  // Mock product data
-  const product = {
-    id: id,
-    name: "Monstera Deliciosa",
-    price: 99,
-    image: tropicalImage,
-    rating: 4.8,
-    reviews: 152,
-    description: "The Monstera Deliciosa, also known as the Swiss Cheese Plant, is a stunning tropical plant with large, glossy leaves featuring distinctive splits and holes. Perfect for adding a bold statement to any space.",
-    careLevel: "Easy",
-    light: "Bright indirect light",
-    water: "Water when top 2 inches of soil are dry",
-    petFriendly: false,
-    size: "Large (3-4 feet tall)",
+  const product = getProductById(id || "");
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 container mx-auto px-4 py-8">
+          <div className="text-center py-16">
+            <h1 className="text-4xl font-bold mb-4">Product Not Found</h1>
+            <p className="text-muted-foreground mb-6">The product you're looking for doesn't exist.</p>
+            <Link to="/shop">
+              <Button>Back to Shop</Button>
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const handleAddToCart = () => {
+    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image }, quantity);
   };
 
   return (
@@ -105,7 +116,7 @@ const ProductDetail = () => {
                   +
                 </Button>
               </div>
-              <Button size="lg" className="flex-1">
+              <Button size="lg" className="flex-1" onClick={handleAddToCart}>
                 Add to Cart
               </Button>
             </div>
@@ -133,15 +144,23 @@ const ProductDetail = () => {
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-semibold mb-2">Watering</h4>
-                    <p className="text-muted-foreground">{product.water}. Ensure proper drainage to prevent root rot.</p>
+                    <p className="text-muted-foreground">{product.careInstructions.watering}</p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Light</h4>
-                    <p className="text-muted-foreground">{product.light}. Avoid direct sunlight which can scorch the leaves.</p>
+                    <p className="text-muted-foreground">{product.careInstructions.light}</p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Humidity</h4>
-                    <p className="text-muted-foreground">Prefers moderate to high humidity. Mist regularly or use a humidity tray.</p>
+                    <p className="text-muted-foreground">{product.careInstructions.humidity}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Temperature</h4>
+                    <p className="text-muted-foreground">{product.careInstructions.temperature}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Fertilizing</h4>
+                    <p className="text-muted-foreground">{product.careInstructions.fertilizing}</p>
                   </div>
                 </div>
               </CardContent>

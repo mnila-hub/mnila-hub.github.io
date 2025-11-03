@@ -3,15 +3,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import tropicalImage from "@/assets/category-tropical.jpg";
 import { Trash2 } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 const Cart = () => {
-  // Mock cart data
-  const cartItems = [
-    { id: "1", name: "Monstera Deliciosa", price: 99, quantity: 1, image: tropicalImage },
-    { id: "2", name: "Snake Plant", price: 45, quantity: 2, image: tropicalImage },
-  ];
+  const { items: cartItems, updateQuantity, removeFromCart } = useCart();
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = subtotal > 125 ? 0 : 15;
@@ -49,15 +45,29 @@ const Cart = () => {
                         <p className="text-muted-foreground mb-2">${item.price}</p>
                         <div className="flex items-center gap-4">
                           <div className="flex items-center border rounded-md">
-                            <Button variant="ghost" size="sm" className="px-3">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="px-3"
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            >
                               -
                             </Button>
                             <span className="px-3">{item.quantity}</span>
-                            <Button variant="ghost" size="sm" className="px-3">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="px-3"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            >
                               +
                             </Button>
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => removeFromCart(item.id)}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>

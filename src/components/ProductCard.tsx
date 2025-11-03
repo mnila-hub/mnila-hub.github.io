@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductCardProps {
   id: string;
@@ -12,6 +13,13 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ id, name, price, image, rating = 4.5, reviews = 20 }: ProductCardProps) => {
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart({ id, name, price, image });
+  };
+
   return (
     <Card className="group overflow-hidden border-border hover:shadow-lg transition-all duration-300">
       <Link to={`/product/${id}`}>
@@ -37,7 +45,7 @@ const ProductCard = ({ id, name, price, image, rating = 4.5, reviews = 20 }: Pro
             <span className="ml-1">({reviews})</span>
           </div>
         </div>
-        <Button className="w-full" variant="default">
+        <Button className="w-full" variant="default" onClick={handleAddToCart}>
           Add to Cart
         </Button>
       </CardContent>

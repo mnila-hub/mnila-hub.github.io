@@ -1,0 +1,54 @@
+═══════════════════════════════════════════════════════════════
+  PANDUAN SINGKAT DEPLOY KE GITHUB PAGES
+  Website: https://ujanglum-hub.github.io/
+═══════════════════════════════════════════════════════════════
+
+✅ KONFIGURASI SUDAH SELESAI!
+
+Vite config sudah diatur untuk root directory (/)
+Semua file untuk GitHub Pages sudah siap!
+
+═══════════════════════════════════════════════════════════════
+  3 LANGKAH MUDAH DEPLOY:
+═══════════════════════════════════════════════════════════════
+
+1️⃣  PUSH KE GITHUB
+   
+   git add .
+   git commit -m "Setup GitHub Pages"
+   git push origin main
+
+
+2️⃣  AKTIFKAN GITHUB PAGES
+   
+   • Buka: https://github.com/ujanglum-hub/ujanglum-hub.github.io
+   • Klik: Settings → Pages
+   • Source: Pilih "GitHub Actions" (PENTING!)
+
+
+3️⃣  SELESAI!
+   
+   Website otomatis deploy dan bisa diakses di:
+   https://ujanglum-hub.github.io/
+
+
+═══════════════════════════════════════════════════════════════
+  JIKA HALAMAN MASIH BLANK:
+═══════════════════════════════════════════════════════════════
+
+✓ Pastikan di Settings > Pages, Source = "GitHub Actions"
+✓ Cek tab "Actions" di GitHub (harus hijau/success)
+✓ Hard refresh browser: Ctrl + Shift + R
+✓ Tunggu 1-2 menit setelah deploy selesai
+
+═══════════════════════════════════════════════════════════════
+
+File penting yang sudah dibuat:
+• vite.config.ts - base: '/' untuk root
+• public/404.html - fix routing
+• public/.nojekyll - disable Jekyll
+• .github/workflows/deploy.yml - auto deploy
+
+Build test: ✅ BERHASIL (359.74 kB)
+
+═══════════════════════════════════════════════════════════════
